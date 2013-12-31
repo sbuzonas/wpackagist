@@ -12,18 +12,18 @@ class Application extends BaseApplication {
 
 	public function __construct() {
 		parent::__construct('Wpackagist');
-		$this->db = new \PDO('sqlite:data/plugins.sqlite');
+		$this->db = new \PDO('sqlite:data/packages.sqlite');
 		$this->db->exec('
-			CREATE TABLE IF NOT EXISTS plugins (
+			CREATE TABLE IF NOT EXISTS packages (
 				id INTEGER PRIMARY KEY,
 				name TEXT,
 				last_committed DATETIME,
 				last_fetched DATETIME,
 				versions TEXT
 			);
-			CREATE UNIQUE INDEX IF NOT EXISTS name_idx ON plugins(name);
-			CREATE INDEX IF NOT EXISTS last_committed_idx ON plugins(last_committed);
-			CREATE INDEX IF NOT EXISTS last_fetched_idx ON plugins(last_fetched);');
+			CREATE UNIQUE INDEX IF NOT EXISTS name_idx ON packages(name);
+			CREATE INDEX IF NOT EXISTS last_committed_idx ON packages(last_committed);
+			CREATE INDEX IF NOT EXISTS last_fetched_idx ON packages(last_fetched);');
 
 	}
 
