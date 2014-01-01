@@ -123,7 +123,6 @@ class UpdateCommand extends Command {
 			$versions[] = $data;
 		}
 
-		array_unshift($branches, 'trunk');
 		foreach ($branches as $branch) {
 			if (!$parsedBranch = $this->validateBranch($branch)) {
 				continue;
