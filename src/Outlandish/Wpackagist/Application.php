@@ -17,11 +17,13 @@ class Application extends BaseApplication {
 			CREATE TABLE IF NOT EXISTS packages (
 				id INTEGER PRIMARY KEY,
 				name TEXT,
+                                type TEXT,
 				last_committed DATETIME,
 				last_fetched DATETIME,
 				versions TEXT
 			);
 			CREATE UNIQUE INDEX IF NOT EXISTS name_idx ON packages(name);
+                        CREATE INDEX IF NOT EXISTS type_idx ON packages(type);
 			CREATE INDEX IF NOT EXISTS last_committed_idx ON packages(last_committed);
 			CREATE INDEX IF NOT EXISTS last_fetched_idx ON packages(last_fetched);');
 
