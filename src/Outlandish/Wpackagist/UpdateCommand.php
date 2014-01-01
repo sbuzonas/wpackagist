@@ -89,10 +89,10 @@ class UpdateCommand extends Command {
 		 */
 		$db = $this->getApplication()->getDb();
 
-		$svn_url = $fetch_options['is_core'] ? "{$fetch_options['svn_base']}tags" : "{$fetch_options['svn_base']}{$package->name}/tags";
+		$svn_url = $fetch_options['is_core'] ? "{$fetch_options['svn_base']}" : "{$fetch_options['svn_base']}{$package->name}/";
 
-		exec("$svn_path ls $svn_url", $tags, $returnCode);
-		exec("$svn_path ls $svn_url", $branches, $returnCode);
+		exec("$svn_path ls ${svn_url}/tags", $tags, $returnCode);
+		exec("$svn_path ls ${svn_url}/branches", $branches, $returnCode);
 		if ($returnCode) {
 			throw new Exception("Error from svn command", $returnCode);
 		}
@@ -103,6 +103,8 @@ class UpdateCommand extends Command {
 
 		$tags = array_map($stripRSlash, $tags);
 		$branches = array_map($stripRSlash, $branches);
+
+		$versions = array();
 
 		foreach ($tags as $tag) {
 			if (!$parsedTag = $this->validateTag($tag)) {
@@ -121,6 +123,7 @@ class UpdateCommand extends Command {
 			$versions[] = $data;
 		}
 
+		array_unshift($branches, 'trunk');
 		foreach ($branches as $branch) {
 			if (!$parsedBranch = $this->validateBranch($branch)) {
 				continue;
