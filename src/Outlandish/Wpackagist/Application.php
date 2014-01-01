@@ -26,7 +26,6 @@ class Application extends BaseApplication {
                         CREATE INDEX IF NOT EXISTS type_idx ON packages(type);
 			CREATE INDEX IF NOT EXISTS last_committed_idx ON packages(last_committed);
 			CREATE INDEX IF NOT EXISTS last_fetched_idx ON packages(last_fetched);');
-
 	}
 
 	public function doRun(InputInterface $input, OutputInterface $output) {
@@ -43,4 +42,5 @@ class Application extends BaseApplication {
 	public function getDb() {
 		return $this->db;
 	}
+
 }
