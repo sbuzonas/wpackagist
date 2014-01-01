@@ -41,7 +41,7 @@ class RefreshCommand extends Command {
 	private function getPackages($svn_path, $svn_base) {
 		exec("$svn_path ls --xml $svn_base", $xmlLines, $returnCode);
 		if ($returnCode) {
-			throw new Exception("Error from svn command", $returnCode);
+			throw new \Exception("Error from svn command", $returnCode);
 		}
 		$xml = simplexml_load_string(implode("\n", $xmlLines));
 
@@ -106,7 +106,7 @@ class RefreshCommand extends Command {
 
 		try {
 			$packages = $this->getPackages($svn_path, $svn_base);
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 			return 1; // error code
 		}

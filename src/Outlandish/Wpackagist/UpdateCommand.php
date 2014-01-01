@@ -52,6 +52,7 @@ class UpdateCommand extends Command {
 	}
 
 	private function updatePackages(OutputInterface $output, $svn_path, $fetch_options, $pkg_group) {
+		$output->writeln(sprintf("Updating %s packages from %s", $pkg_group, $fetch_options['svn_base']));
 		$packages = $this->getStalePackages($pkg_group);
 		foreach ($packages as $index => $package) {
 			$percent = floor($index / count($packages) * 1000) / 10;
@@ -92,9 +93,13 @@ class UpdateCommand extends Command {
 		$svn_url = $fetch_options['is_core'] ? "{$fetch_options['svn_base']}" : "{$fetch_options['svn_base']}{$package->name}/";
 
 		exec("$svn_path ls ${svn_url}/tags", $tags, $returnCode);
+		if ($returnCode) {
+			$tags = array();
+		}
+
 		exec("$svn_path ls ${svn_url}/branches", $branches, $returnCode);
 		if ($returnCode) {
-			throw new Exception("Error from svn command", $returnCode);
+			$branches = array();
 		}
 
 		$stripRSlash = function($str) {
@@ -148,7 +153,7 @@ class UpdateCommand extends Command {
 	private function validateBranch($branch) {
 		try {
 			return $this->versionParser->normalizeBranch($branch);
-		} catch (Exception $ex) {
+		} catch (\Exception $ex) {
 
 		}
 
@@ -158,7 +163,7 @@ class UpdateCommand extends Command {
 	private function validateTag($version) {
 		try {
 			return $this->versionParser->normalize($version);
-		} catch (Exception $ex) {
+		} catch (\Exception $ex) {
 
 		}
 
